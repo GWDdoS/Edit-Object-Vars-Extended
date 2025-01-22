@@ -121,10 +121,11 @@ bool EditObjectPopup::setup() {
 
 EditObjectPopup* EditObjectPopup::create() {
     auto ret = new EditObjectPopup();
-    if (ret && ret->init(485.f, 230.f)) {
+    if (ret->initAnchored(485.f, 230.f)) {
         ret->autorelease();
         return ret;
     }
-    CC_SAFE_DELETE(ret);
+
+    delete ret;
     return nullptr;
 };

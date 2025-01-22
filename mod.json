@@ -1,16 +1,13 @@
 {
-	"geode": "3.4.0",
+	"geode": "4.2.0",
 	"gd": {
-		"win": "2.206",
-		"android": "2.206",
-		"mac": "2.206",
-		"ios": "2.206"
+		"win": "2.2074"
 	},
 	"id": "jojo989.editobjectvariables",
 	"name": "editObjectVariables",
 	"version": "v1.1.0",
 	"developer": "jojo989",
-	"description": "",
+	"description": "mod to edit object variables like xpos, ypos, etc",
 	"resources": {
 		"spritesheets": {
 			"EditObjButton": [
