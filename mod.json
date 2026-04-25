@@ -8,7 +8,7 @@
 	},
 	"id": "gwddos.editobjectvarsextended",
 	"name": "Edit Object Vars Extended",
-	"version": "v2.0.0",
+	"version": "v2.1.0",
 	"developers": ["Jojo989", "GWDdoS"],
 	"description": "Mod to edit object variables like xpos, ypos, etc Now updated for 2.2081",
 	"resources": {
