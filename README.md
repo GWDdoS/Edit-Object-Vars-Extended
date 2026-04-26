@@ -16,5 +16,6 @@ Contains many features to edit the variables of objects in the editor by clickin
 - Mobile/Mac support
 
 # Credits
-- Jojo989 Original creator of this mod
-- GWDdoS Current maintainer and updater of this mod
+- Jojo989: Original creator of this mod
+- GWDdoS: Current maintainer and updater of this mod
+- slideglide: Made the v2.1.1 rewrite

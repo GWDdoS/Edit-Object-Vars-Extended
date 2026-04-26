@@ -1,25 +1,24 @@
 #pragma once
-#include <Geode/Geode.hpp>
-#include <Geode/ui/Popup.hpp>
-#include <Geode/modify/EditorUI.hpp>
 
-using namespace geode::prelude;
+#include <Geode/ui/Button.hpp>
+#include <Geode/modify/EditorUI.hpp>
 
 class EditObjectPopup : public geode::Popup {
 	protected:
-		bool init(float width, float height);
-		float objectID;
-		CCMenuItemSpriteExtra* m_applyButton;
+		bool init() override;
+
 		void createInputs();
-		void applyChanges(CCObject*);
-		CCMenu* buttonMenu;
+
+		geode::Button* m_applyButton;
 		geode::TextInput* xPosInput;
 		geode::TextInput* yPosInput;
 		geode::TextInput* rotationInput;
 		geode::TextInput* scaleXInput;
 		geode::TextInput* scaleYInput;
 		geode::TextInput* zOrderInput;
-	public:	
+		geode::TextInput* objectIDInput;
+
+	public:
 		static EditObjectPopup* create();
 		GameObject* selectedObject = LevelEditorLayer::get()->m_editorUI->m_selectedObject;
 };
