@@ -8,13 +8,14 @@ Contains many features to edit the variables of objects in the editor by clickin
 - Edit Scale X and Y
 - Edit Rotation
 - Edit Z Order
+- Mobile/Mac support
 
 # Planned Features
 - High Precision Editor Support (?)
 - Shear support
 - Layer support
-- Mobile/Mac support
 
 # Credits
-- Jojo989 Original creator of this mod
-- GWDdoS Current maintainer and updater of this mod
+- Jojo989: Original creator of this mod
+- GWDdoS: Current maintainer and updater of this mod
+- slideglide: Made the v2.1.1 rewrite
