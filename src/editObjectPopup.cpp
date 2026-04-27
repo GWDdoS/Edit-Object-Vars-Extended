@@ -61,10 +61,11 @@ void EditObjectPopup::createInputs() {
         break;
         case 1:
         // grid->addChild(makeInputField("Opacity", opacityInput, selectedObject->getOpacity()));
+        // opacity does nothing. taht or i did it wrong idk
         // grid->addChild(makeInputField("Flip X", flipXInput, selectedObject->isFlipX())); // what to do if these are bools
         // grid->addChild(makeInputField("Flip Y", flipYInput, selectedObject->isdFlipY()));
-        // grid->addChild(makeInputField("R Scale X", rScaleXInput, selectedObject->getRScaleX()));
-        // grid->addChild(makeInputField("R Scale Y", rScaleYInput, selectedObject->getRScaleY()));
+        grid->addChild(makeInputField("R Scale X", rScaleXInput, selectedObject->getRScaleX()));
+        grid->addChild(makeInputField("R Scale Y", rScaleYInput, selectedObject->getRScaleY()));
         
         break;
     }
@@ -99,40 +100,41 @@ bool EditObjectPopup::init() {
     m_applyButton = Button::createWithNode(
         ButtonSprite::create("Apply"),
         [this](auto) {
-            auto xPosStr = xPosInput->getString();
-            auto yPosStr = yPosInput->getString();
-            auto scaleXStr = scaleXInput->getString();
-            auto scaleYStr = scaleYInput->getString();
-            auto rotationStr = rotationInput->getString();
-            auto zOrderStr = zOrderInput->getString();
-            auto opacityStr = opacityInput->getString();
-            auto flipXStr = flipXInput->getString();
-            auto flipYStr = flipYInput->getString();
-            auto rScaleXStr = rScaleXInput->getString();
-            auto rScaleYStr = rScaleYInput->getString();
-
-
-            if (xPosStr.empty() || yPosStr.empty() || scaleXStr.empty() ||
-            scaleYStr.empty() || rotationStr.empty() || zOrderStr.empty()){
-                FLAlertLayer::create("Error", "Some of the fields are empty or null.", "OK")->show();
-                return;
+            if (m_page == 0) {
+                auto xPosStr = xPosInput->getString();
+                auto yPosStr = yPosInput->getString();
+                auto scaleXStr = scaleXInput->getString();
+                auto scaleYStr = scaleYInput->getString();
+                auto rotationStr = rotationInput->getString();
+                auto zOrderStr = zOrderInput->getString();                
+                
+                if (xPosStr.empty() || yPosStr.empty() || scaleXStr.empty() ||
+                scaleYStr.empty() || rotationStr.empty() || zOrderStr.empty()){
+                    FLAlertLayer::create("Error", "Some of the fields are empty or null.", "OK")->show();
+                    return;
+                }
+                
+                float scaleX = utils::numFromString<float>(scaleXStr).unwrapOr(1.f);
+                float scaleY = utils::numFromString<float>(scaleYStr).unwrapOr(1.f);
+                
+                selectedObject->setPositionX(utils::numFromString<float>(xPosStr).unwrapOr(0.f));
+                selectedObject->setPositionY(utils::numFromString<float>(yPosStr).unwrapOr(0.f));
+                selectedObject->updateCustomScaleX(scaleX);
+                selectedObject->updateCustomScaleY(scaleY);
+                selectedObject->setRotation(utils::numFromString<float>(rotationStr).unwrapOr(0.f));
+                selectedObject->m_zOrder = utils::numFromString<int>(zOrderStr).unwrapOr(0);
+                
+            } else if (m_page == 1) {
+                auto rScaleXStr = rScaleXInput->getString();
+                auto rScaleYStr = rScaleYInput->getString();
+                
+                if (rScaleXStr.empty() || rScaleYStr.empty()) {
+                    FLAlertLayer::create("Error", "Some of the fields are empty or null.", "OK")->show();
+                    return;
+                }
+                selectedObject->setRScaleX(utils::numFromString<float>(rScaleXStr).unwrapOr(1.f));
+                selectedObject->setRScaleY(utils::numFromString<float>(rScaleYStr).unwrapOr(1.f));
             }
-            
-            float scaleX = utils::numFromString<float>(scaleXStr).unwrapOr(1.f);
-            float scaleY = utils::numFromString<float>(scaleYStr).unwrapOr(1.f);
-            
-            selectedObject->setPositionX(utils::numFromString<float>(xPosStr).unwrapOr(0.f));
-            selectedObject->setPositionY(utils::numFromString<float>(yPosStr).unwrapOr(0.f));
-            selectedObject->updateCustomScaleX(scaleX);
-            selectedObject->updateCustomScaleY(scaleY);
-            selectedObject->setRotation(utils::numFromString<float>(rotationStr).unwrapOr(0.f));
-            selectedObject->m_zOrder = utils::numFromString<int>(zOrderStr).unwrapOr(0);
-            // selectedObject->setOpacity(utils::numFromString<int>(opacityInput->getString()).unwrapOr(0));
-            //selectedObject->setFlipX(utils::numFromString<bool>(flipXStr).unwrapOr(false));
-            //selectedObject->setFlipY(utils::numFromString<bool>(flipYStr).unwrapOr(false));
-            // selectedObject->setRScaleX(utils::numFromString<float>(rScaleXStr).unwrapOr(1.f));
-            // selectedObject->setRScaleY(utils::numFromString<float>(rScaleYStr).unwrapOr(1.f));
-
         }
     );
     
@@ -149,7 +151,7 @@ bool EditObjectPopup::init() {
         ButtonSprite::create(">"),
         [this](auto) {
             m_page++;
-            if (m_page > 0) m_page = 0;
+            if (m_page > 1) m_page = 1;
             createInputs();
         }
     );

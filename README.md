@@ -9,6 +9,7 @@ Contains many features to edit the variables of objects in the editor by clickin
 - Edit Rotation
 - Edit Z Order
 - Mobile/Mac support
+- Edit RScale X And Y
 
 # Planned Features
 - High Precision Editor Support (?)
