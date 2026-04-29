@@ -1,3 +1,7 @@
+# 2.1.3
+- Added Skew By, To, and setSkew
+- Added Object String
+
 # 2.1.2
 - Fixed slide's accidental rounding
 - Added RScale for X and Y

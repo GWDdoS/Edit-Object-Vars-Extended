@@ -1,12 +1,20 @@
 #include "editObjectPopup.hpp"
 #include "Geode/cocos/base_nodes/CCNode.h"
 #include <Geode/Geode.hpp>
+#include <Geode/cocos/actions/CCActionInterval.h> // skewBy and skewTo
+#include <Geode/binding/GJScaleControl.hpp> // skewFromValue  and valueFromSkew
+#include <Geode/cocos/base_nodes/CCNode.h> // setSkewY and setSkewX
+#include <Geode/cocos/sprite_nodes/CCSprite.h> // setSkewY and setSkewX
+#include <Geode/binding/GJTransformControlDelegate.hpp> // transformSkewXChanged
+#include <Geode/binding/EditorUI.hpp>// transformSkewXChanged
 #include <Geode/binding/LevelEditorLayer.hpp>
 
 using namespace geode::prelude;
 
 // i hate cocos ui
 // i hate rewriting cocos ui
+
+// jojo FUCK UR FORMATING BRO WHAT
 
 template <typename T>
 static CCNode* makeInputField(const char* inputTitle,
@@ -58,6 +66,8 @@ inline void EditObjectPopup::setRelativeScaleInputs(CCNode* grid) {
                                   selectedObject->getRScaleX()));
     grid->addChild(makeInputField("R Scale Y", rScaleYInput,
                                   selectedObject->getRScaleY()));
+    grid->addChild(makeInputField("Skew X", xSkewInput,selectedObject->getSkewX()));
+    grid->addChild(makeInputField("Skew Y", ySkewInput,selectedObject->getSkewY()));
 }
 
 inline void EditObjectPopup::setObjectStringInput(CCNode* grid) {
@@ -128,6 +138,7 @@ bool EditObjectPopup::init() {
                 auto rotationStr = rotationInput->getString();
                 auto zOrderStr = zOrderInput->getString();
 
+
                 if (xPosStr.empty() || yPosStr.empty() || scaleXStr.empty() ||
                     scaleYStr.empty() || rotationStr.empty() || zOrderStr.empty()) {
                     FLAlertLayer::create("Error",
@@ -153,6 +164,8 @@ bool EditObjectPopup::init() {
             } else if (m_page == 1) {
                 auto rScaleXStr = rScaleXInput->getString();
                 auto rScaleYStr = rScaleYInput->getString();
+                auto setSkewXStr = xSkewInput->getString();
+                auto setSkewYStr = ySkewInput->getString();
 
                 if (rScaleXStr.empty() || rScaleYStr.empty()) {
                     FLAlertLayer::create("Error",
@@ -164,6 +177,8 @@ bool EditObjectPopup::init() {
                     utils::numFromString<float>(rScaleXStr).unwrapOr(1.f));
                 selectedObject->setRScaleY(
                     utils::numFromString<float>(rScaleYStr).unwrapOr(1.f));
+                selectedObject->setSkewX(utils::numFromString<float>(setSkewXStr).unwrapOr(0.f));
+                selectedObject->setSkewY(utils::numFromString<float>(setSkewYStr).unwrapOr(0.f));
             } else if (m_page == 2) {
                 GameManager::sharedState()->getEditorLayer()->createObjectsFromString(objectStringInput->getString(), true, true);
             }

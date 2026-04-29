@@ -9,10 +9,10 @@ Contains many features to edit the variables of objects in the editor by clickin
 - Edit Rotation
 - Edit Z Order
 - Mobile/Mac support
+- Shear support
 
 # Planned Features
 - High Precision Editor Support (?)
-- Shear support
 - Layer support
 
 # Credits
