@@ -1,3 +1,7 @@
+# 2.1.4
+- Updated to new geode
+- Fixed decimals on inputs
+
 # 2.1.3
 - Added Skew By, To, and setSkew
 - Added Object String

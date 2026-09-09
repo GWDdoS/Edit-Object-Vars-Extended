@@ -33,7 +33,11 @@ static CCNode* makeInputField(const char* inputTitle,
     inputName->setPosition(60.f, 16.f);
     inputName->setCommonFilter(filter);
 
-    inputName->setString(fmt::format("{}", value));
+    if constexpr (std::is_floating_point_v<T>) {
+        inputName->setString(fmt::format("{:.6f}", value));
+    } else {
+        inputName->setString(fmt::format("{}", value));
+    }
 
     inputNodes->addChild(lbl);
     inputNodes->addChild(inputName);

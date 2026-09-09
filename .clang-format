@@ -1,15 +1,39 @@
-BasedOnStyle: Microsoft
+BasedOnStyle: LLVM
+Language: Cpp
+
 IndentWidth: 4
 TabWidth: 4
+IndentPPDirectives: BeforeHash
+UseTab: Never
+KeepEmptyLinesAtTheStartOfBlocks: false
+
+NamespaceIndentation: All
+AccessModifierOffset: -4
+
 ColumnLimit: 0
 
-BreakBeforeBraces: Attach
-IndentCaseLabels: false
-SpacesInContainerLiterals: true
-
-AllowShortBlocksOnASingleLine: Always
-AllowShortFunctionsOnASingleLine: Inline
-
-
-Cpp11BracedListStyle: false
 PointerAlignment: Left
+ReferenceAlignment: Left
+
+BreakBeforeBraces: Attach
+
+AlignEscapedNewlines: Left
+AlignConsecutiveMacros: false
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortBlocksOnASingleLine: Never
+AllowShortLambdasOnASingleLine: Empty
+
+BinPackArguments: false
+BinPackParameters: false
+
+PackConstructorInitializers: Never
+
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+SortIncludes: false
+LambdaBodyIndentation: Signature
