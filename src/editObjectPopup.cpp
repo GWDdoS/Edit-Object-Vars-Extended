@@ -1,12 +1,12 @@
 #include "editObjectPopup.hpp"
 #include "Geode/cocos/base_nodes/CCNode.h"
 #include <Geode/Geode.hpp>
-#include <Geode/cocos/actions/CCActionInterval.h> // skewBy and skewTo
-#include <Geode/binding/GJScaleControl.hpp> // skewFromValue  and valueFromSkew
-#include <Geode/cocos/base_nodes/CCNode.h> // setSkewY and setSkewX
-#include <Geode/cocos/sprite_nodes/CCSprite.h> // setSkewY and setSkewX
+#include <Geode/cocos/actions/CCActionInterval.h>       // skewBy and skewTo
+#include <Geode/binding/GJScaleControl.hpp>             // skewFromValue  and valueFromSkew
+#include <Geode/cocos/base_nodes/CCNode.h>              // setSkewY and setSkewX
+#include <Geode/cocos/sprite_nodes/CCSprite.h>          // setSkewY and setSkewX
 #include <Geode/binding/GJTransformControlDelegate.hpp> // transformSkewXChanged
-#include <Geode/binding/EditorUI.hpp>// transformSkewXChanged
+#include <Geode/binding/EditorUI.hpp>                   // transformSkewXChanged
 #include <Geode/binding/LevelEditorLayer.hpp>
 
 using namespace geode::prelude;
@@ -18,23 +18,28 @@ using namespace geode::prelude;
 
 template <typename T>
 static CCNode* makeInputField(const char* inputTitle,
-                              geode::TextInput*& inputName, T value,
+                              geode::TextInput*& inputName,
+                              T value,
                               CommonFilter filter = CommonFilter::Float) {
     auto inputNodes = CCNode::create();
-    inputNodes->setContentSize({ 120.f, 52.f });
+    inputNodes->setContentSize({120.f, 52.f});
 
     auto lbl = CCLabelBMFont::create(inputTitle, "goldFont.fnt");
     lbl->setScale(0.55f);
-    lbl->setAnchorPoint({ 0.5f, 0.5f });
+    lbl->setAnchorPoint({0.5f, 0.5f});
     lbl->setPosition(60.f, 38.f);
 
     inputName = TextInput::create(110.f, inputTitle, "bigFont.fnt");
-    inputName->setAnchorPoint({ 0.5f, 0.5f });
+    inputName->setAnchorPoint({0.5f, 0.5f});
     inputName->setPosition(60.f, 16.f);
     inputName->setCommonFilter(filter);
 
     if constexpr (std::is_floating_point_v<T>) {
-        inputName->setString(fmt::format("{:.6f}", value));
+        // should instead get float decimals
+        // thus float is 6 and a double would be 15 if we ever get to editing a dobule
+        //
+        auto precision = std::numeric_limits<T>::digits10; // idk if theres a better way to do this lmk if there is
+        inputName->setString(fmt::format("{:.{}f}", value, precision));
     } else {
         inputName->setString(fmt::format("{}", value));
     }
@@ -53,10 +58,8 @@ inline void EditObjectPopup::setPositionInputs(CCNode* grid) {
         makeInputField("Scale X", scaleXInput, selectedObject->getScaleX()));
     grid->addChild(
         makeInputField("Scale Y", scaleYInput, selectedObject->getScaleY()));
-    grid->addChild(makeInputField("Rotation", rotationInput,
-                                  selectedObject->getRotation()));
-    grid->addChild(makeInputField("Z Order", zOrderInput,
-                                  selectedObject->m_zOrder, CommonFilter::Int));
+    grid->addChild(makeInputField("Rotation", rotationInput, selectedObject->getRotation()));
+    grid->addChild(makeInputField("Z Order", zOrderInput, selectedObject->m_zOrder, CommonFilter::Int));
 }
 
 inline void EditObjectPopup::setRelativeScaleInputs(CCNode* grid) {
@@ -66,17 +69,14 @@ inline void EditObjectPopup::setRelativeScaleInputs(CCNode* grid) {
     // selectedObject->isFlipX())); // what to do if these are bools
     // grid->addChild(makeInputField("Flip Y", flipYInput,
     // selectedObject->isdFlipY()));
-    grid->addChild(makeInputField("R Scale X", rScaleXInput,
-                                  selectedObject->getRScaleX()));
-    grid->addChild(makeInputField("R Scale Y", rScaleYInput,
-                                  selectedObject->getRScaleY()));
-    grid->addChild(makeInputField("Skew X", xSkewInput,selectedObject->getSkewX()));
-    grid->addChild(makeInputField("Skew Y", ySkewInput,selectedObject->getSkewY()));
+    grid->addChild(makeInputField("R Scale X", rScaleXInput, selectedObject->getRScaleX()));
+    grid->addChild(makeInputField("R Scale Y", rScaleYInput, selectedObject->getRScaleY()));
+    grid->addChild(makeInputField("Skew X", xSkewInput, selectedObject->getSkewX()));
+    grid->addChild(makeInputField("Skew Y", ySkewInput, selectedObject->getSkewY()));
 }
 
 inline void EditObjectPopup::setObjectStringInput(CCNode* grid) {
-    grid->addChild(makeInputField("Object String", objectStringInput,
-                                  selectedObject->getSaveString(GameManager::sharedState()->getEditorLayer())));
+    grid->addChild(makeInputField("Object String", objectStringInput, selectedObject->getSaveString(GameManager::sharedState()->getEditorLayer())));
 }
 
 void EditObjectPopup::createInputs() {
@@ -87,7 +87,7 @@ void EditObjectPopup::createInputs() {
     auto cs = m_mainLayer->getContentSize();
 
     auto grid = CCNode::create();
-    grid->setContentSize({ 370.f, 120.f });
+    grid->setContentSize({370.f, 120.f});
     grid->setLayout(RowLayout::create()
                         ->setGrowCrossAxis(true)
                         ->setAxisAlignment(AxisAlignment::Center)
@@ -106,7 +106,7 @@ void EditObjectPopup::createInputs() {
         break;
     }
 
-    grid->setAnchorPoint({ 0.5f, 0.5f });
+    grid->setAnchorPoint({0.5f, 0.5f});
     grid->setPosition(cs.width / 2, cs.height / 2 + 25.f);
     grid->updateLayout();
 
@@ -142,11 +142,11 @@ bool EditObjectPopup::init() {
                 auto rotationStr = rotationInput->getString();
                 auto zOrderStr = zOrderInput->getString();
 
-
                 if (xPosStr.empty() || yPosStr.empty() || scaleXStr.empty() ||
                     scaleYStr.empty() || rotationStr.empty() || zOrderStr.empty()) {
                     FLAlertLayer::create("Error",
-                                         "Some of the fields are empty or null.", "OK")
+                                         "Some of the fields are empty or null.",
+                                         "OK")
                         ->show();
                     return;
                 }
@@ -173,7 +173,8 @@ bool EditObjectPopup::init() {
 
                 if (rScaleXStr.empty() || rScaleYStr.empty()) {
                     FLAlertLayer::create("Error",
-                                         "Some of the fields are empty or null.", "OK")
+                                         "Some of the fields are empty or null.",
+                                         "OK")
                         ->show();
                     return;
                 }
@@ -214,7 +215,7 @@ bool EditObjectPopup::init() {
     return true;
 }
 
-EditObjectPopup* EditObjectPopup::create() {
+EditObjectPopup* EditObjectPopup::createEditGUI() {
     auto ret = new EditObjectPopup();
     if (ret->init()) {
         ret->autorelease();

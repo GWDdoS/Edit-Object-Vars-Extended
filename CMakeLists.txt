@@ -20,4 +20,10 @@ endif()
 
 add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
 
+# it fixes mac std::atomic error
+# idk bro if theres a better fix please help
+if (APPLE AND TARGET asp)
+    target_compile_options(asp PUBLIC -include atomic)
+endif()
+
 setup_geode_mod(${PROJECT_NAME})

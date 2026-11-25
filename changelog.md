@@ -1,3 +1,9 @@
+# 2.2.0
+- Updated to new geode
+- Added new subpixel movement buttons
+- Fixed a bug with decimals 
+- Made all floats automatically adjust their decimals
+
 # 2.1.4
 - Updated to new geode
 - Fixed decimals on inputs
