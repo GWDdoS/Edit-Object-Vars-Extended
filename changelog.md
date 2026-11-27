@@ -1,3 +1,8 @@
+# 2.3.0
+- Updated for GD 2.2091
+- Only works for legacy move menu as of now
+- Started a funny project ;)
+
 # 2.2.0
 - Updated to new geode
 - Added new subpixel movement buttons

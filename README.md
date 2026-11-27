@@ -15,6 +15,8 @@ Contains many features to edit the variables of objects in the editor by clickin
 - High Precision Editor Support (?)
 - Shear support
 - Layer support
+- Custom Move support for DPad menu
+- Float stuff
 
 # Credits
 - Jojo989: Original creator of this mod
